@@ -13,4 +13,4 @@ RUN apk --update add go git\
   && apk del go git \
   && rm -rf $GOPATH /var/cache/apk/*
 
-CMD /coco-splunk-tcp-forwarder
+CMD /coco-splunk-tcp-forwarder -fwdAddress=$FWD_ADDRESS 
