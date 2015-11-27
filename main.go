@@ -15,23 +15,14 @@ var (
 
 func main() {
 	flag.Parse()
-	br := bufio.NewReader(os.Stdin)
 	con, err := tls.Dial("tcp", *fwdAddress, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	for {
-		str, err := br.ReadString('\n')
-
+		_, err := io.Copy(con, bufio.NewReader(os.Stdin))
 		if err != nil {
-			if err == io.EOF {
-				return
-			}
 			log.Fatal(err)
-		}
-		_, err = con.Write([]byte(str))
-		if err != nil {
-			log.Println(err)
 		}
 	}
 }
