@@ -20,9 +20,10 @@ func main() {
 		log.Fatal(err)
 	}
 	for {
-		_, err := io.Copy(con, bufio.NewReader(os.Stdin))
+		i, err := io.Copy(con, bufio.NewReader(os.Stdin))
 		if err != nil {
 			log.Fatal(err)
 		}
+		log.Printf("tcp forwarder exiting. wrote a total of %d bytes while running.", i)
 	}
 }
