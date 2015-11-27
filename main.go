@@ -20,6 +20,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer con.Close()
 	for {
 		str, err := br.ReadString('\n')
 
