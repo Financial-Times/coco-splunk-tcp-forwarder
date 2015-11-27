@@ -15,24 +15,14 @@ var (
 
 func main() {
 	flag.Parse()
-	br := bufio.NewReader(os.Stdin)
 	con, err := tls.Dial("tcp", *fwdAddress, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer con.Close()
-	for {
-		str, err := br.ReadString('\n')
-
-		if err != nil {
-			if err == io.EOF {
-				return
-			}
-			log.Fatal(err)
-		}
-		_, err = con.Write([]byte(str))
-		if err != nil {
-			log.Println(err)
-		}
+	i, err := io.Copy(con, bufio.NewReader(os.Stdin))
+	if err != nil {
+		log.Fatal(err)
 	}
+	log.Printf("tcp forwarder exiting. wrote a total of %d bytes while running.", i)
 }
